@@ -1,3 +1,4 @@
+# ignite-reactjs-auth-backend
 ## Resumo e descrição do projeto
 
 Aula do Bootcamp Ignite, pela empresa Rocketseat.<br/>
@@ -6,10 +7,10 @@ Onde utilizamos o processo de autentificação, de um backend estático, dispon�
 git@github.com:rocketseat-education/ignite-reactjs-auth-backend.git
 ```
 Realizamos as verificações de token pelo NextJS.
+  
 
 
-
-Tecnologias
+## Tecnologias
 
 Este projeto foi feito utilizando as seguintes tecnologias:
 
@@ -18,15 +19,6 @@ Este projeto foi feito utilizando as seguintes tecnologias:
 - [NextJS](https://nextjs.org/)
 - [Axios](https://github.com/axios/axios)
 - [Nookies](https://github.com/maticzav/nookies)
-### Tutorial de instalação
-
-Clone o projeto
-
-```term
-
-git@github.com:moraes3000/reactjs-ignite-desafio-01.git
-
-```
-
+### Anotações interessantes
 Token pode ser lido pelo seguinte site:
-- https://jwt.io/"# ignite-reactjs-auth-backend" 
+- https://jwt.io/
