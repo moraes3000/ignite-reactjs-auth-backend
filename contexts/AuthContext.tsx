@@ -17,7 +17,8 @@ type SignInCredentials = {
 
 
 type AuthContextData = {
-  signIn(credentials: SignInCredentials): Promise<void>;
+  signIn: (credentials: SignInCredentials) => Promise<void>;
+  signOut: () => void;
   user: User;
   isAuthenticated: boolean;
 }
@@ -28,9 +29,13 @@ type AuthProviderProps = {
 
 export const AuthContext = createContext({} as AuthContextData)
 
-export function sighOut() {
+let authChannel: BroadcastChannel
+
+export function signOut() {
   destroyCookie(undefined, 'nomeDaAplicacao.token')
   destroyCookie(undefined, 'nomeDaAplicacao.refreshToken')
+
+  authChannel.postMessage('signOut');
 
   Router.push('/');
 }
@@ -38,6 +43,23 @@ export function sighOut() {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>()
   const isAuthenticated = !!user;
+
+  useEffect(() => {
+    authChannel = new BroadcastChannel('auth')
+
+    authChannel.onmessage = (message) => {
+      console.log(message);
+      switch (message.data) {
+        case 'signOut':
+          break;
+        case 'signIn':
+          Router.push('/dashboard')
+          break;
+        default:
+          break;
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const { 'nomeDaAplicacao.token': token } = parseCookies()
@@ -50,7 +72,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser({ email, permissions, roles })
       })
         .catch(() => {
-          sighOut()
+          signOut()
         })
     }
   }, [])
@@ -82,7 +104,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api.defaults.headers['Authorization'] = `Bearer ${token}`
 
       Router.push('/dashboard')
-
+      authChannel.postMessage('signIn')
 
     } catch (error) {
       console.log(error)
@@ -90,7 +112,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
+    <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   )

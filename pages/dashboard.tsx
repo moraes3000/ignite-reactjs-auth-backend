@@ -1,7 +1,7 @@
 import { destroyCookie } from "nookies"
 import { useContext, useEffect } from "react"
 import { Can } from "../components/Can"
-import { AuthContext } from "../contexts/AuthContext"
+import { AuthContext, signOut } from "../contexts/AuthContext"
 import { useCan } from "../hooks/useCan"
 import { setupAPIClient } from "../services/api"
 import { api } from "../services/apiClient"
@@ -23,6 +23,7 @@ export default function Dashboard() {
   return (
     <>
       <h1>dashboard: {user?.email}</h1>
+      <button onClick={signOut}>Sair</button>
       {userCanSeeMetrics && <div>metricas</div>}
 
 
