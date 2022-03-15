@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import { Resolver } from "dns";
 import { parseCookies, setCookie } from 'nookies'
 import { sighOut } from "../contexts/AuthContext";
+import { AuthTokenError } from "./errors/AuthTokenError";
 
 let isRefreshing = false;
 let failedRequestsQueue = [];
@@ -83,6 +84,8 @@ export function setupAPIClient(ctx = undefined) {
         if (process.browser) {
           // sighOut();
           sighOut();
+        } else {
+          return Promise.reject(new AuthTokenError())
         }
       }
     }
